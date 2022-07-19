@@ -1,3 +1,4 @@
 	body {background-color: #FCFDBC;color: #774836; }
 	button{background-color: #FDF0C4;color: #41354D;margin: 4px 2px;padding: 10px;}
+    p.double{border-style: double;}
     p {color:green;}
