@@ -1,59 +1,598 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-	<meta charset="utf-8">
-	<!-- 
-    <link rel="stylesheet" href="styles.css"> -->
-     <h3><center>YiLin Practicing web</center></h3>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YLASH — AI & Data Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+  :root {
+    --bg: #0d0f0e;
+    --bg2: #141714;
+    --bg3: #1c201b;
+    --line: rgba(255,255,255,0.07);
+    --line2: rgba(255,255,255,0.13);
+    --text: #e8ebe6;
+    --muted: #7a8078;
+    --accent: #a8f0a0;
+    --accent2: #5ec8b8;
+    --accent3: #f0c86a;
+    --tag-bg: rgba(168,240,160,0.08);
+    --tag-border: rgba(168,240,160,0.2);
+  }
 
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    line-height: 1.7;
+    font-size: 16px;
+    overflow-x: hidden;
+  }
+
+  /* --- NAV --- */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.2rem 2.5rem;
+    border-bottom: 0.5px solid var(--line);
+    background: rgba(13,15,14,0.85);
+    backdrop-filter: blur(12px);
+  }
+  .nav-logo {
+    font-family: 'DM Mono', monospace;
+    font-size: 14px;
+    color: var(--accent);
+    letter-spacing: 0.08em;
+    text-decoration: none;
+  }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a {
+    font-size: 13px; color: var(--muted); text-decoration: none;
+    letter-spacing: 0.04em; transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--text); }
+
+  /* --- SECTIONS --- */
+  section { padding: 6rem 0; }
+  .container { max-width: 900px; margin: 0 auto; padding: 0 2.5rem; }
+
+  /* --- HERO --- */
+  #hero {
+    min-height: 100vh;
+    display: flex; align-items: center;
+    padding-top: 80px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-grid-bg {
+    position: absolute; inset: 0; z-index: 0;
+    background-image:
+      linear-gradient(var(--line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(ellipse 80% 60% at 60% 50%, black 0%, transparent 70%);
+  }
+  .hero-glow {
+    position: absolute; top: 20%; right: -10%;
+    width: 500px; height: 500px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(168,240,160,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-content { position: relative; z-index: 1; }
+  .hero-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px; color: var(--accent);
+    letter-spacing: 0.15em; text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    display: flex; align-items: center; gap: 0.75rem;
+  }
+  .hero-eyebrow::before {
+    content: ''; display: block;
+    width: 32px; height: 1px; background: var(--accent);
+  }
+  h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(2.8rem, 6vw, 4.5rem);
+    line-height: 1.08;
+    font-weight: 400;
+    margin-bottom: 1.5rem;
+    letter-spacing: -0.02em;
+  }
+  h1 em {
+    font-style: italic; color: var(--accent);
+  }
+  .hero-sub {
+    font-size: 17px; color: var(--muted);
+    max-width: 520px; margin-bottom: 3rem;
+    line-height: 1.75;
+  }
+  .hero-ctas { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    padding: 0.75rem 1.6rem; border-radius: 4px;
+    font-size: 13px; font-weight: 500; letter-spacing: 0.04em;
+    text-decoration: none; transition: all 0.2s; cursor: pointer;
+    font-family: 'DM Mono', monospace;
+  }
+  .btn-primary {
+    background: var(--accent); color: #0a0e0a;
+    border: 1px solid var(--accent);
+  }
+  .btn-primary:hover { background: #bff5b7; }
+  .btn-ghost {
+    background: transparent; color: var(--text);
+    border: 0.5px solid var(--line2);
+  }
+  .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* --- ABOUT STRIP --- */
+  .about-strip {
+    border-top: 0.5px solid var(--line);
+    border-bottom: 0.5px solid var(--line);
+    padding: 3rem 0;
+  }
+  .about-strip .container {
+    display: grid; grid-template-columns: 1fr 1fr 1fr;
+    gap: 3rem;
+  }
+  .about-item-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px; color: var(--accent2);
+    letter-spacing: 0.12em; text-transform: uppercase;
+    margin-bottom: 0.6rem;
+  }
+  .about-item-val {
+    font-size: 15px; color: var(--text);
+    line-height: 1.5;
+  }
+
+  /* --- SECTION TITLES --- */
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px; color: var(--muted);
+    letter-spacing: 0.15em; text-transform: uppercase;
+    margin-bottom: 0.75rem;
+    display: flex; align-items: center; gap: 0.75rem;
+  }
+  .section-label::after {
+    content: ''; flex: 1;
+    height: 0.5px; background: var(--line2);
+  }
+  h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(1.8rem, 3.5vw, 2.5rem);
+    font-weight: 400; line-height: 1.2;
+    margin-bottom: 1rem;
+    letter-spacing: -0.01em;
+  }
+  .section-intro {
+    color: var(--muted); font-size: 15px; max-width: 520px;
+    margin-bottom: 3rem;
+  }
+
+  /* --- PROJECTS --- */
+  .project-grid { display: grid; gap: 1.5px; }
+  .project-card {
+    background: var(--bg2);
+    border: 0.5px solid var(--line);
+    border-radius: 2px;
+    padding: 2rem 2.25rem;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 1.5rem;
+    transition: background 0.2s, border-color 0.2s;
+    text-decoration: none; color: inherit;
+    position: relative;
+    overflow: hidden;
+  }
+  .project-card::before {
+    content: ''; position: absolute;
+    left: 0; top: 0; bottom: 0; width: 2px;
+    background: transparent;
+    transition: background 0.2s;
+  }
+  .project-card:hover { background: var(--bg3); border-color: var(--line2); }
+  .project-card:hover::before { background: var(--accent); }
+  .project-card.featured::before { background: var(--accent); }
+  .project-number {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px; color: var(--muted);
+    margin-bottom: 0.75rem;
+  }
+  .project-title {
+    font-size: 17px; font-weight: 500;
+    margin-bottom: 0.5rem; color: var(--text);
+  }
+  .project-desc {
+    font-size: 14px; color: var(--muted);
+    line-height: 1.65; margin-bottom: 1.25rem;
+  }
+  .project-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+  .tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px; padding: 3px 8px; border-radius: 2px;
+    background: var(--tag-bg); border: 0.5px solid var(--tag-border);
+    color: var(--accent); letter-spacing: 0.04em;
+  }
+  .tag.blue {
+    background: rgba(94,200,184,0.07);
+    border-color: rgba(94,200,184,0.2);
+    color: var(--accent2);
+  }
+  .tag.amber {
+    background: rgba(240,200,106,0.07);
+    border-color: rgba(240,200,106,0.2);
+    color: var(--accent3);
+  }
+  .project-link {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px; color: var(--muted);
+    text-decoration: none; letter-spacing: 0.08em;
+    display: flex; align-items: center; gap: 0.4rem;
+    white-space: nowrap; align-self: start;
+    padding: 0.5rem 0.75rem;
+    border: 0.5px solid transparent;
+    border-radius: 2px;
+    transition: all 0.2s;
+  }
+  .project-link:hover {
+    color: var(--accent); border-color: var(--tag-border);
+    background: var(--tag-bg);
+  }
+  .project-highlight {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px; color: var(--accent);
+    margin-top: 0.75rem;
+    padding-top: 0.75rem;
+    border-top: 0.5px solid var(--line);
+  }
+
+  /* --- SKILLS --- */
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5px;
+  }
+  .skill-group {
+    background: var(--bg2);
+    border: 0.5px solid var(--line);
+    padding: 1.5rem;
+  }
+  .skill-group-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px; color: var(--accent2);
+    letter-spacing: 0.1em; text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+  .skill-list {
+    list-style: none; display: flex; flex-wrap: wrap; gap: 0.5rem;
+  }
+  .skill-list li {
+    font-size: 13px; color: var(--muted);
+    padding: 4px 0;
+    border-bottom: 0.5px solid var(--line);
+    width: 100%;
+  }
+  .skill-list li:last-child { border-bottom: none; }
+
+  /* --- CONTACT --- */
+  .contact-block {
+    background: var(--bg2);
+    border: 0.5px solid var(--line);
+    padding: 3rem;
+    display: flex; align-items: center;
+    justify-content: space-between;
+    gap: 2rem; flex-wrap: wrap;
+  }
+  .contact-text h3 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.8rem; font-weight: 400; margin-bottom: 0.5rem;
+  }
+  .contact-text p { color: var(--muted); font-size: 15px; }
+  .contact-links { display: flex; gap: 1rem; }
+
+  /* --- FOOTER --- */
+  footer {
+    border-top: 0.5px solid var(--line);
+    padding: 2rem 2.5rem;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .footer-left {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px; color: var(--muted);
+  }
+  .footer-right {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px; color: var(--muted);
+  }
+
+  /* --- ANIMATIONS --- */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .fade-up { animation: fadeUp 0.7s ease forwards; }
+  .fade-up-1 { animation-delay: 0.1s; opacity: 0; }
+  .fade-up-2 { animation-delay: 0.25s; opacity: 0; }
+  .fade-up-3 { animation-delay: 0.4s; opacity: 0; }
+  .fade-up-4 { animation-delay: 0.55s; opacity: 0; }
+
+  @media (max-width: 640px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    .container { padding: 0 1.5rem; }
+    .about-strip .container { grid-template-columns: 1fr; gap: 2rem; }
+    .project-card { grid-template-columns: 1fr; }
+    .contact-block { flex-direction: column; }
+    footer { flex-direction: column; gap: 0.5rem; text-align: center; }
+  }
+</style>
 </head>
-     
-<body class="flex">
-     <hr>
-    
-     <div>
-          <p>Elevator pitch </p>
-          <p> Motivated Data Analyst with technical expertise and work experience in data analysis, 
-            visualization, project management, problem-solving and timely reporting. I take ownership of key 
-            deliverables and consistently meeting deadlines, while staying committed to continually improving 
-            my technical skills and sharing knowledge with my colleagues.</p>
-     </div>
-	
-     
-     <div id="wrapper">
-     
-         <div id="start-container" class="flex">
-             <div>
-                <p> project present </p>
-                <a href='./CS5002/movies.html'>CS5002_Movies</a>
+<body>
 
-                <a href='./CS5003/CS5003_P1_quiz.html'>CS5003_P1_quiz</a>
+<nav>
+  <a class="nav-logo" href="#">YLASH</a>
+  <ul class="nav-links">
+    <li><a href="#projects">projects</a></li>
+    <li><a href="#skills">skills</a></li>
+    <li><a href="#contact">contact</a></li>
+  </ul>
+</nav>
 
-                <a href='./CS5003/CS5003_P2_game.html'>CS5003_P2_game</a>
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-grid-bg"></div>
+  <div class="hero-glow"></div>
+  <div class="container hero-content">
+    <p class="hero-eyebrow fade-up fade-up-1">available for opportunities</p>
+    <h1 class="fade-up fade-up-2">
+      Building with<br><em>data & AI</em><br>end to end.
+    </h1>
+    <p class="hero-sub fade-up fade-up-3">
+      From ETL pipelines and ML models to AI API integrations —
+      I bridge the gap between raw data and working products.
+    </p>
+    <div class="hero-ctas fade-up fade-up-4">
+      <a class="btn btn-primary" href="#projects">↓ view projects</a>
+      <a class="btn btn-ghost" href="https://github.com/YLASH" target="_blank">github →</a>
+    </div>
+  </div>
+</section>
 
+<!-- ABOUT STRIP -->
+<div class="about-strip">
+  <div class="container">
+    <div>
+      <p class="about-item-label">background</p>
+      <p class="about-item-val">Data analysis · ML · AI application development</p>
+    </div>
+    <div>
+      <p class="about-item-label">focus</p>
+      <p class="about-item-val">End-to-end data pipelines & applied AI integration</p>
+    </div>
+    <div>
+      <p class="about-item-label">currently learning</p>
+      <p class="about-item-val">System design · Data engineering patterns</p>
+    </div>
+  </div>
+</div>
 
-             <!-- <table id="leader-board">
-                 <thead>
-                 <tr><th colspan="3" scope="colgroup">Work experince  </th> </tr>
-                 <tr>
-                     <th>Date</th><th> Company </th> <th> Work...</th>
-                 </tr>
-                 </thead>
-                 <tbody>
-                 <tr><td> 2021 </td><td> Micron </td><td> EE</td></tr>
-                 </tbody>
-             </table> -->
-             </div>
-         </div>
-     
-     
-<!--      
-         -->
-     
-     
-</body>
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="container">
+    <p class="section-label">work</p>
+    <h2>Selected projects</h2>
+    <p class="section-intro">Real problems, real pipelines. Each project runs end-to-end from data to insight or product.</p>
+
+    <div class="project-grid">
+
+      <!-- Project 1: Retail -->
+      <a class="project-card featured" href="https://github.com/YLASH/Retail-Sales-Automation-System" target="_blank">
+        <div>
+          <p class="project-number">01 — Data Engineering + ML</p>
+          <p class="project-title">Retail Sales Automation System</p>
+          <p class="project-desc">
+            Designed an end-to-end automated system replacing daily manual reporting.
+            Built ETL pipeline, Streamlit dashboard, and compared three ML forecasting models
+            using Walk-Forward Validation to avoid data leakage. Random Forest reduced
+            forecast error by 16.2% MAPE over baseline.
+          </p>
+          <div class="project-tags">
+            <span class="tag">Python</span>
+            <span class="tag">Pandas</span>
+            <span class="tag">scikit-learn</span>
+            <span class="tag blue">Streamlit</span>
+            <span class="tag blue">Google Sheets API</span>
+            <span class="tag amber">Walk-Forward CV</span>
+            <span class="tag amber">Random Forest</span>
+          </div>
+          <p class="project-highlight">↳ Random Forest: 60.6% MAPE vs Baseline 76.8% — 16.2% improvement</p>
+        </div>
+        <span class="project-link">view repo ↗</span>
+      </a>
+
+      <!-- Project 2: AI Voice Translator -->
+      <a class="project-card" href="https://github.com/YLASH/ai-voice-translator" target="_blank">
+        <div>
+          <p class="project-number">02 — AI Application</p>
+          <p class="project-title">AI Voice Translator</p>
+          <p class="project-desc">
+            Full-stack AI pipeline integrating three external APIs into a single
+            browser-based product. Handles audio upload and live recording, auto-detects
+            source language, translates to 8 languages, and synthesises speech output.
+          </p>
+          <div class="project-tags">
+            <span class="tag">Python</span>
+            <span class="tag">Flask</span>
+            <span class="tag blue">OpenAI Whisper</span>
+            <span class="tag blue">GPT-4o-mini</span>
+            <span class="tag blue">ElevenLabs TTS</span>
+            <span class="tag amber">Multi-API integration</span>
+          </div>
+        </div>
+        <span class="project-link">view repo ↗</span>
+      </a>
+
+      <!-- Project 3: WikiCited -->
+      <a class="project-card" href="https://github.com/YLASH/WikiCited_Project" target="_blank">
+        <div>
+          <p class="project-number">03 — Data Analysis + Visualisation</p>
+          <p class="project-title">Wikipedia Open Access Coverage Analysis</p>
+          <p class="project-desc">
+            Analysed open-access coverage of Wikipedia-cited research across Scotland's
+            18 universities. Compared two methodology pipelines (Altmetric vs WikiOpenCite),
+            cleaned and processed citation metadata, and visualised findings in Tableau.
+          </p>
+          <div class="project-tags">
+            <span class="tag">Python</span>
+            <span class="tag">Pandas</span>
+            <span class="tag blue">Tableau</span>
+            <span class="tag blue">Jupyter Notebook</span>
+            <span class="tag amber">Methodology comparison</span>
+          </div>
+        </div>
+        <span class="project-link">view repo ↗</span>
+      </a>
+
+      <!-- Project 4: Survey -->
+      <a class="project-card" href="https://github.com/YLASH/Survey-Data-Analysis-Project" target="_blank">
+        <div>
+          <p class="project-number">04 — EDA + Visualisation</p>
+          <p class="project-title">Developer Survey Data Analysis</p>
+          <p class="project-desc">
+            Full analyst workflow on IBM Stack Overflow developer survey data —
+            data collection via API and web scraping, wrangling, EDA, and a systematic
+            comparison of chart types to identify the most effective visualisation per scenario.
+          </p>
+          <div class="project-tags">
+            <span class="tag">Python</span>
+            <span class="tag">BeautifulSoup</span>
+            <span class="tag blue">Matplotlib</span>
+            <span class="tag blue">Seaborn</span>
+            <span class="tag amber">EDA</span>
+          </div>
+        </div>
+        <span class="project-link">view repo ↗</span>
+      </a>
+
+      <!-- Project 5: Cathay -->
+      <div class="project-card" style="cursor: default;">
+        <div>
+          <p class="project-number">05 — Financial DS (Enterprise)</p>
+          <p class="project-title">Cathay DS Project</p>
+          <p class="project-desc">
+            Data science project in a financial services context.
+            Source code is private; available for discussion during interviews.
+          </p>
+          <div class="project-tags">
+            <span class="tag">Python</span>
+            <span class="tag blue">Data Science</span>
+            <span class="tag amber">Finance domain</span>
+          </div>
+        </div>
+        <span class="project-link" style="color: var(--muted); cursor: default;">private</span>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="container">
+    <p class="section-label">capabilities</p>
+    <h2>Technical skills</h2>
+    <p class="section-intro">Strongest in the full data-to-insight flow. Building towards system design and data engineering depth.</p>
+
+    <div class="skills-grid">
+      <div class="skill-group">
+        <p class="skill-group-title">Data & Analysis</p>
+        <ul class="skill-list">
+          <li>Python (Pandas, NumPy)</li>
+          <li>SQL</li>
+          <li>ETL pipeline design</li>
+          <li>EDA & statistical analysis</li>
+          <li>Google Sheets API</li>
+        </ul>
+      </div>
+      <div class="skill-group">
+        <p class="skill-group-title">Machine Learning</p>
+        <ul class="skill-list">
+          <li>scikit-learn</li>
+          <li>Random Forest, Linear Regression</li>
+          <li>Walk-Forward Validation</li>
+          <li>Feature engineering</li>
+          <li>Model comparison & evaluation</li>
+        </ul>
+      </div>
+      <div class="skill-group">
+        <p class="skill-group-title">AI Integration</p>
+        <ul class="skill-list">
+          <li>OpenAI API (Whisper, GPT)</li>
+          <li>ElevenLabs TTS</li>
+          <li>LLM-powered application design</li>
+          <li>Multi-API pipeline orchestration</li>
+        </ul>
+      </div>
+      <div class="skill-group">
+        <p class="skill-group-title">Visualisation & BI</p>
+        <ul class="skill-list">
+          <li>Tableau</li>
+          <li>Streamlit</li>
+          <li>Plotly</li>
+          <li>Matplotlib / Seaborn</li>
+        </ul>
+      </div>
+      <div class="skill-group">
+        <p class="skill-group-title">Tools & Infra</p>
+        <ul class="skill-list">
+          <li>Git / GitHub / GitLab</li>
+          <li>Flask</li>
+          <li>Jupyter Notebook</li>
+          <li>REST API consumption</li>
+        </ul>
+      </div>
+      <div class="skill-group">
+        <p class="skill-group-title">In progress</p>
+        <ul class="skill-list">
+          <li>System design</li>
+          <li>Data engineering patterns</li>
+          <li>Cloud fundamentals</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="container">
+    <p class="section-label">get in touch</p>
+    <div class="contact-block">
+      <div class="contact-text">
+        <h3>Open to new roles</h3>
+        <p>Interested in Data Analyst, Applied AI, or hybrid data/AI positions.</p>
+      </div>
+      <div class="contact-links">
+        <a class="btn btn-primary" href="mailto:ylshiu2022ma@gmail.com">email me</a>
+        <a class="btn btn-ghost" href="https://github.com/YLASH" target="_blank">GitHub</a>
+        <a class="btn btn-ghost" href="https://www.linkedin.com/in/yilins-amhileen" target="_blank">LinkedIn</a>
+      </div>
+    </div>
+  </div>
+</section>
+
 <footer>
-
+  <span class="footer-left">YLASH.github.io</span>
+  <span class="footer-right">built with intention, not a template</span>
 </footer>
+
+</body>
 </html>
