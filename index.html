@@ -10,13 +10,13 @@
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
-    --bg: #0d0f0e;
+    --bg: #111311;
     --bg2: #141714;
     --bg3: #1c201b;
     --line: rgba(255,255,255,0.07);
     --line2: rgba(255,255,255,0.13);
     --text: #e8ebe6;
-    --muted: #7a8078;
+    --muted:#9da39b;
     --accent: #a8f0a0;
     --accent2: #5ec8b8;
     --accent3: #f0c86a;
@@ -30,7 +30,7 @@
     background: var(--bg);
     color: var(--text);
     font-family: 'DM Sans', sans-serif;
-    font-weight: 300;
+    font-weight:4400;
     line-height: 1.7;
     font-size: 16px;
     overflow-x: hidden;
@@ -180,6 +180,8 @@
   /* --- PROJECTS --- */
   .project-grid { display: grid; gap: 1.5px; }
   .project-card {
+    padding: 2.5rem 2.75rem;
+    border-radius: 4px;
     background: var(--bg2);
     border: 0.5px solid var(--line);
     border-radius: 2px;
